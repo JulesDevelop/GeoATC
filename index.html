@@ -1,1 +1,168 @@
-<p>Salut !</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Radio Interface</title>
+  <style>
+    body {
+      background-color: #2c2c2c;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+    }
+    .radio-panel {
+      border: 1px solid #555;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #1e1e1e;
+      width: 300px;
+      margin-bottom: 20px;
+    }
+    .squawk-panel {
+      border: 1px solid #555;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #1e1e1e;
+      width: 660px;
+      margin-bottom: 20px;
+    }
+    .title {
+      margin-bottom: 10px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 5px 0;
+    }
+    input[type="number"], input[type="text"] {
+      width: 100px;
+      font-size: 18px;
+      text-align: center;
+      padding: 5px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    input[readonly] {
+      background-color: #555;
+    }
+    .buttons button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+    }
+    .buttons button:hover {
+      background-color: #666;
+    }
+    .active {
+      background-color: green;
+    }
+    .inactive {
+      background-color: #555;
+    }
+    .radio-panels {
+      display: flex;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="squawk-panel">
+    <div class="title">Transpondeur</div>
+    <div class="field">
+      <label for="squawk">Code:</label>
+      <input type="text" id="squawk" value="2000">
+    </div>
+    <p id="squawk-errorText" style="color: rgb(219, 50, 50);"><br></p>
+  </div>
+
+  <div class="radio-panels">
+    <div class="radio-panel">
+      <div class="title">COM 1</div>
+      <div class="field">
+        <label for="com1">Fréquence :</label>
+        <input type="text" id="com1" value="OFF" readonly>
+      </div>
+      <div class="buttons" style="margin-top: 10px;">
+        <p id="com2-errorText" style="color: rgb(219, 50, 50);"><br></p>
+        <button onclick="toogleFrequencies()">ON/OFF</button>
+      </div>
+    </div>
+
+    <div class="radio-panel">
+      <div class="title">COM 2</div>
+      <div class="field">
+        <label for="com2">Fréquence :</label>
+        <input type="text" id="com2" value="122.800">
+      </div>
+      <div class="buttons" style="margin-top: 10px;">
+        <p id="com2-errorText" style="color: rgb(219, 50, 50);"><br></p>
+        <button onclick="switchFrequencies()">Switch</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var frequency = ""
+    var isActive = false
+
+    const squawkInput = document.getElementById('squawk');
+    squawkInput.addEventListener('change', () => {
+      const value = squawkInput.value.padStart(4, '0');
+      if (!/^([0-7]{4})$/.test(value)) {
+        document.getElementById("squawk-errorText").textContent = "Code transpondeur invalide !"
+        squawkInput.value = '2000';
+      } else {
+        document.getElementById("squawk-errorText").textContent = "<br>"
+      }
+    });
+
+    const com2Input = document.getElementById('com2');
+    com2Input.addEventListener('change', () => {
+      if (!/^\d{3}\.\d{3}$/.test(com2Input.value)) {
+        document.getElementById("com2-errorText").textContent = "Fréquence invalide !"
+        com2Input.value = '122.800';
+      } else {
+        document.getElementById("com2-errorText").textContent = "<br>"
+      }
+    });
+
+    function switchFrequencies() {
+      const com1 = document.getElementById('com1');
+      const com2 = document.getElementById('com2');
+      if(com1.value = "OFF"){
+        com1.value = "122.800"
+      }
+      const temp = com1.value;
+      frequency = temp;
+      isActive = true;
+      com1.value = com2.value;
+      com2.value = temp;
+    }
+
+    function toogleFrequencies() {
+      const com1 = document.getElementById('com1');
+      if(isActive){
+        frequency = com1.value
+        document.getElementById('com1').value = "OFF"
+        isActive = false
+      } else if(frequency != "") {
+        document.getElementById('com1').value = frequency
+        isActive = true
+      }
+    }
+  </script>
+</body>
+</html>
