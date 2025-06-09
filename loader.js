@@ -1,4 +1,4 @@
-fetch('https://cdn.jsdelivr.net/gh/JulesDevelop/GeoATC/index.html')
+fetch('https://cdn.jsdelivr.net/gh/JulesDevelop/GeoATC/interface.html')
       .then(response => {
         if (!response.ok) {
           throw new Error("Erreur HTTP " + response.status);
