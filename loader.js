@@ -1,0 +1,1 @@
+document.write(cdn.jsdelivr.net/gh/JulesDevelop/GeoATC/index.html);
